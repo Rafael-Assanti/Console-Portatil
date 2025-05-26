@@ -23,13 +23,15 @@ class BikeGame:
         # Game constants
         self.ROAD_LEFT = 24
         self.ROAD_RIGHT = 104
-        self.BIKE_WIDTH = 8
+        self.BIKE_WIDTH = 8	
         self.CAR_WIDTH = 12
         self.LANE_POSITIONS = [34, 64, 94]  # 3 lanes for cars
-        self.MIN_CAR_GAP = 40
-        self.GAME_SPEED = 0.8
+        self.MIN_CAR_GAP = 30
         self.CRASH_FREQ = 800  # Hz
         self.CRASH_DURATION = 0.2
+        self.GAME_SPEED_START = 1.0
+        self.GAME_SPEED_MAX = 100.0
+        self.SPEED_INCREASE_PER_SECOND = 0.05
         
         # Game state
         self.reset_game()
@@ -42,6 +44,8 @@ class BikeGame:
         self.cars = []
         self.score = 0
         self.game_active = True
+        self.game_start_time = utime.ticks_ms()  # Track survival start
+        self.GAME_SPEED = self.GAME_SPEED_START
 
     def draw_road(self):
         """Draw the road and lane markings"""
@@ -116,7 +120,13 @@ class BikeGame:
         """Update game state - to be called in main loop"""
         if not self.game_active:
             return
-
+    
+    
+        survival_seconds = utime.ticks_diff(utime.ticks_ms(), self.game_start_time) / 1000
+        self.GAME_SPEED = min(
+            self.GAME_SPEED_START + (survival_seconds * self.SPEED_INCREASE_PER_SECOND),
+            self.GAME_SPEED_MAX
+        )
         # Accelerometer controls
         accel_x = float(self.mpu.acceleration[1])
         self.filtered_tilt = self.alpha * accel_x + (1 - self.alpha) * self.filtered_tilt
@@ -129,7 +139,7 @@ class BikeGame:
         self.draw_road()
         self.draw_bike()
         
-        if random.random() < 0.03:
+        if random.random() < 0.10:
             self.create_car()
             
         self.move_cars()
