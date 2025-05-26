@@ -18,7 +18,6 @@ class MenuSystem:
         self.options = [
             "1. Moto",
             "2. Aliens",
-            "3. Turn Off"
         ]
         self.selected = 0
         

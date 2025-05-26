@@ -148,12 +148,29 @@ class SpaceInvadersGame:
             if active_enemies > 0:
                 self.enemy_move_interval = max(200, 1000 - (len(self.enemies) - active_enemies) * 50)
         
+        active_enemies = sum(1 for e in self.enemies if e['active'])
+        if active_enemies == 0:
+            self.respawn_enemies()
         # Check if enemies reached bottom
         for enemy in self.enemies:
             if enemy['active'] and enemy['y'] >= self.player_y - 5:
                 self.game_over()
                 return
 
+    def respawn_enemies(self):
+    """Reset enemies for a new wave"""
+    self.enemies = []
+    # Spawn enemies slightly lower each wave for difficulty
+    for row in range(self.ENEMY_ROWS):
+        for col in range(self.ENEMY_COLS):
+            self.enemies.append({
+                'x': 20 + col * 20,
+                'y': 10 + row * 12,  # Increased Y for difficulty
+                'active': True
+            })
+    # Increase game speed slightly
+    self.enemy_move_interval = max(200, self.enemy_move_interval - 50)
+    
     def shoot(self):
         """Create a new bullet from player position"""
         current_time = utime.ticks_ms()
