@@ -40,7 +40,7 @@ class SpaceInvadersGame:
         self.bullets = []
         self.enemies = []
         self.score = 0
-        self.lives = 1
+        self.s = 1
         self.game_active = True
         self.last_shot = 0
         self.enemy_direction = 1
@@ -230,7 +230,6 @@ class SpaceInvadersGame:
         
         # Draw score and lives
         self.oled.text(f"Score: {self.score}", 0, 0, 1)
-        self.oled.text(f"Lives: {self.lives}", 80, 0, 1)
         
         self.oled.show()
         return True
