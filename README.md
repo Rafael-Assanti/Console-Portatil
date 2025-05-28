@@ -65,7 +65,10 @@ graph TD
 | Baterias 18650 | 1 |
 | Estrutura impressa em 3D (PLA) | 1 conjunto |
 
+
 **Diagrama de conexões:**
+
+![](Imagens/DiagramaDeConexao.png)
 ```
 Raspberry Pi Pico:
   GP8  -> SDA (OLED + MPU6050)
@@ -109,7 +112,7 @@ O console opera através de um sistema hierárquico:
 
 ## Testes
 
-[Vídeo demonstração](https://example.com/console-demo.mp4)
+[Vídeo demonstração](linkdovideo)
 
 ## Autores
   -Amanda Carolina Ambrizzi Ramin (22.00721-0)
